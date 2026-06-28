@@ -15,6 +15,7 @@ func newJenkinsCmd() *cobra.Command {
 		Short: "Query Jenkins (read-only)",
 	}
 	c.AddCommand(newJenkinsWhoAmICmd())
+	c.AddCommand(newJenkinsJobCmd())
 	return c
 }
 
