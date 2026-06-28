@@ -16,6 +16,7 @@ func newJenkinsCmd() *cobra.Command {
 	}
 	c.AddCommand(newJenkinsWhoAmICmd())
 	c.AddCommand(newJenkinsJobCmd())
+	c.AddCommand(newJenkinsBuildCmd())
 	return c
 }
 
