@@ -1,16 +1,51 @@
+# Standalone Agent CRD example. For the full walkthrough (Secret + custom
+# runtime image + UI test), see kagent-pr/examples-jenkins-triage/README.md
+# or docs/runtime-setup.md.
+#
+# Prereqs:
+#   1. The Secret `jenkins-cictl-credentials` exists in namespace `kagent`
+#      with key `credentials.yaml`.
+#   2. The kagent runtime image has `cictl` in PATH. See docs/runtime-setup.md.
 apiVersion: kagent.dev/v1alpha2
 kind: Agent
 metadata:
-  name: jenkins-triage-agent
+  name: jenkins-triage
   namespace: kagent
 spec:
-  description: 只读 Jenkins 故障诊断 agent。
-  systemMessage: |
-    你是一个 Jenkins triage agent。使用 cictl jenkins 子命令。只读，不要 mutation。
-  modelConfig:
-    name: default-model-config
+  type: Declarative
+  description: |
+    只读地诊断 Jenkins 构建失败。拉取控制台日志、构建元数据、任务配置、
+    Kubernetes cloud 配置；不能触发、重试或中止任何构建。
   skills:
     gitRefs:
       - url: https://github.com/Feelings0220/cictl
         ref: v0.1.0
-        path: skills/jenkins.md
+        path: skills
+  declarative:
+    runtime: go
+    modelConfig: default-model-config
+    systemMessage: |
+      你是一个 Jenkins triage agent。
+
+      使用 /skills/jenkins.md 中描述的 `cictl jenkins ...` 命令查询 Jenkins。
+      默认 console 日志取最后 200 行，定位失败位置后再 --full。
+
+      硬规则：
+      - 绝不构造 curl 或其他方式去 mutation Jenkins。cictl 没有任何 mutation
+        子命令；用户要求 retry/abort 时，让他去 Jenkins UI。
+      - 绝不回显凭据文件。
+    deployment:
+      env:
+        - name: HOME
+          value: /home/agent
+      volumes:
+        - name: cictl-credentials
+          secret:
+            secretName: jenkins-cictl-credentials
+            items:
+              - key: credentials.yaml
+                path: credentials.yaml
+      volumeMounts:
+        - name: cictl-credentials
+          mountPath: /home/agent/.config/cictl
+          readOnly: true

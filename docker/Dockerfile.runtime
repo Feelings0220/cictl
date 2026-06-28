@@ -1,0 +1,40 @@
+# Multi-stage Dockerfile that adds the cictl binary to a kagent runtime image.
+# Build:
+#   docker build \
+#     --build-arg KAGENT_VERSION=v0.x.y \
+#     --build-arg CICTL_VERSION=v0.1.0 \
+#     -t ghcr.io/<your-namespace>/kagent-runtime-with-cictl:v0.1.0 \
+#     -f docker/Dockerfile.runtime .
+#
+# Push:
+#   docker push ghcr.io/<your-namespace>/kagent-runtime-with-cictl:v0.1.0
+#
+# Use with a kagent Agent CRD by overriding the runtime image via Helm or
+# directly in the Agent CRD's deployment.image registry/repository.
+
+# ---------- stage 1: compile cictl statically for linux/amd64 ----------
+ARG GO_VERSION=1.26
+FROM golang:${GO_VERSION}-alpine AS build
+WORKDIR /src
+RUN apk add --no-cache git
+ARG CICTL_VERSION=v0.1.0
+RUN git clone --depth 1 --branch ${CICTL_VERSION} \
+    https://github.com/Feelings0220/cictl.git .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+    go build \
+      -ldflags="-s -w -X main.version=${CICTL_VERSION}" \
+      -o /out/cictl ./cmd/cictl
+
+# ---------- stage 2: kagent runtime + cictl ----------
+# Pin to a specific kagent release in production. Defaults to "latest" here for
+# convenience but you should set --build-arg KAGENT_VERSION=v0.x.y.
+ARG KAGENT_VERSION=latest
+FROM ghcr.io/kagent-dev/kagent/app:${KAGENT_VERSION}
+
+# kagent's app image runs as a non-root user. Switch to root only to install
+# the binary; the original entrypoint is preserved.
+USER 0
+COPY --from=build /out/cictl /usr/local/bin/cictl
+RUN chmod 0755 /usr/local/bin/cictl && \
+    /usr/local/bin/cictl --version
+USER 1000

@@ -16,9 +16,9 @@ lint:
 clean:
 	rm -f $(BINARY) $(BINARY).exe coverage.txt
 
-# Stage the helm chart + skill into a kagent worktree at $(KAGENT_DIR).
+# Stage the examples/jenkins-triage walkthrough into a kagent worktree at $(KAGENT_DIR).
 # Used to produce the kagent PR. See docs/kagent-pr-checklist.md.
 vendor-to-kagent:
 	@test -n "$(KAGENT_DIR)" || (echo "set KAGENT_DIR=path/to/kagent"; exit 1)
-	mkdir -p $(KAGENT_DIR)/helm/agents/jenkins-triage/templates
-	cp -r kagent-pr/helm-agents-jenkins-triage/* $(KAGENT_DIR)/helm/agents/jenkins-triage/
+	mkdir -p $(KAGENT_DIR)/examples/jenkins-triage
+	cp -r kagent-pr/examples-jenkins-triage/* $(KAGENT_DIR)/examples/jenkins-triage/
