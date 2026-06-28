@@ -57,7 +57,7 @@ func (c *Client) GET(ctx context.Context, path string, into any) ([]byte, error)
 		// Strip credentials from any url errors.
 		return nil, fmt.Errorf("jenkins request failed: %w", scrubURLError(err, c.token))
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("read response body: %w", err)

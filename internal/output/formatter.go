@@ -76,13 +76,14 @@ func renderTable(w io.Writer, value any) error {
 	for i, c := range cols {
 		headers[i] = strings.ToUpper(c)
 	}
-	fmt.Fprintln(tw, strings.Join(headers, "\t"))
+	// tabwriter buffers internally; write errors surface from Flush().
+	_, _ = fmt.Fprintln(tw, strings.Join(headers, "\t"))
 	for _, r := range rows {
 		cells := make([]string, len(cols))
 		for i, c := range cols {
 			cells[i] = fmt.Sprintf("%v", r[c])
 		}
-		fmt.Fprintln(tw, strings.Join(cells, "\t"))
+		_, _ = fmt.Fprintln(tw, strings.Join(cells, "\t"))
 	}
 	return tw.Flush()
 }
@@ -93,18 +94,24 @@ func renderMD(w io.Writer, value any) error {
 		return err
 	}
 	cols := columns(rows)
-	fmt.Fprintln(w, "| "+strings.Join(cols, " | ")+" |")
+	if _, err := fmt.Fprintln(w, "| "+strings.Join(cols, " | ")+" |"); err != nil {
+		return err
+	}
 	sep := make([]string, len(cols))
 	for i := range cols {
 		sep[i] = "---"
 	}
-	fmt.Fprintln(w, "|"+strings.Join(sep, "|")+"|")
+	if _, err := fmt.Fprintln(w, "|"+strings.Join(sep, "|")+"|"); err != nil {
+		return err
+	}
 	for _, r := range rows {
 		cells := make([]string, len(cols))
 		for i, c := range cols {
 			cells[i] = fmt.Sprintf("%v", r[c])
 		}
-		fmt.Fprintln(w, "| "+strings.Join(cells, " | ")+" |")
+		if _, err := fmt.Fprintln(w, "| "+strings.Join(cells, " | ")+" |"); err != nil {
+			return err
+		}
 	}
 	return nil
 }
