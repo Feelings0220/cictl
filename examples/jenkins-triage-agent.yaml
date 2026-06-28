@@ -1,0 +1,16 @@
+apiVersion: kagent.dev/v1alpha2
+kind: Agent
+metadata:
+  name: jenkins-triage-agent
+  namespace: kagent
+spec:
+  description: 只读 Jenkins 故障诊断 agent。
+  systemMessage: |
+    你是一个 Jenkins triage agent。使用 ciq jenkins 子命令。只读，不要 mutation。
+  modelConfig:
+    name: default-model-config
+  skills:
+    gitRefs:
+      - url: https://github.com/kagent-dev/ciq
+        ref: v0.1.0
+        path: skills/jenkins.md

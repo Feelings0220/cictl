@@ -1,0 +1,34 @@
+apiVersion: kagent.dev/v1alpha2
+kind: Agent
+metadata:
+  name: {{ include "jenkins-triage.fullname" . }}
+  namespace: {{ .Values.namespace }}
+spec:
+  description: {{ .Values.agent.description | quote }}
+  systemMessage: |
+    {{- .Values.agent.systemPrompt | nindent 4 }}
+  modelConfig:
+    name: {{ .Values.agent.modelConfigRef.name }}
+  skills:
+    gitRefs:
+      {{- range .Values.skills.gitRefs }}
+      - url: {{ .url | quote }}
+        ref: {{ .ref | quote }}
+        path: {{ .path | quote }}
+      {{- end }}
+  runtime:
+    image: {{ .Values.runtimeImage | quote }}
+    env:
+      - name: HOME
+        value: /home/agent
+    volumeMounts:
+      - name: ciq-credentials
+        mountPath: /home/agent/.config/ciq
+        readOnly: true
+  volumes:
+    - name: ciq-credentials
+      secret:
+        secretName: {{ .Values.credentialsSecret.name }}
+        items:
+          - key: {{ .Values.credentialsSecret.key }}
+            path: credentials.yaml
