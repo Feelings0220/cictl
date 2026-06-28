@@ -1,0 +1,7 @@
+version: "2"
+
+linters:
+  default: standard
+  # The "standard" preset already enables: errcheck, govet, ineffassign,
+  # staticcheck, unused. Pin explicit version of the binary in CI to avoid
+  # drift.

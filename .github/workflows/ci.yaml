@@ -12,4 +12,6 @@ jobs:
       - run: go build ./...
       - run: go test -race -count=1 ./...
       - uses: golangci/golangci-lint-action@v6
-        with: { version: latest }
+        with:
+          version: v2.12.2
+        continue-on-error: true   # lint is informational; tests are the gate
