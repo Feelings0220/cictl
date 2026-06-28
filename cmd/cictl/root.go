@@ -17,7 +17,7 @@ var rf rootFlags
 
 func newRoot() *cobra.Command {
 	root := &cobra.Command{
-		Use:           "ciq",
+		Use:           "cictl",
 		Short:         "AI-agent-friendly CI inspection CLI (read-only)",
 		SilenceUsage:  true,
 		SilenceErrors: false,
@@ -25,7 +25,7 @@ func newRoot() *cobra.Command {
 	}
 	defaultCreds, _ := os.UserConfigDir()
 	if defaultCreds != "" {
-		defaultCreds += string(os.PathSeparator) + "ciq" + string(os.PathSeparator) + "credentials.yaml"
+		defaultCreds += string(os.PathSeparator) + "cictl" + string(os.PathSeparator) + "credentials.yaml"
 	}
 	root.PersistentFlags().StringVar(&rf.credsFile, "credentials", defaultCreds, "path to credentials.yaml")
 	root.PersistentFlags().StringVar(&rf.context, "context", "", "credentials context (defaults to default-context)")

@@ -4,7 +4,7 @@
 
 ```
 ┌──────────────────┐
-│  cmd/ciq         │  cobra 子命令；不直接接触 HTTP
+│  cmd/cictl         │  cobra 子命令；不直接接触 HTTP
 │  （每个资源一个   │
 │   文件）         │
 └────────┬─────────┘
@@ -60,21 +60,21 @@ Go 的 `net/url` 错误会把 URL 嵌进 `error.Error()` 字符串里，如果 U
 
 1. 在 `internal/<name>/` 下新建一个包，镜像 `internal/jenkins/` 的结构：
    `client.go`、`path.go`（如果需要）、按资源拆分的文件。
-2. 在 `cmd/ciq/<name>.go` 添加父命令，按资源拆分子命令文件。
+2. 在 `cmd/cictl/<name>.go` 添加父命令，按资源拆分子命令文件。
 3. 每加一个资源类型，先写 `httptest` 支撑的测试，再暴露 CLI。
 4. 写一份 `skills/<name>.md` 描述对 Agent 暴露的命令面。
 
-`cmd/ciq/root.go` 里的 `rootFlags`、`internal/output`、`internal/config`
+`cmd/cictl/root.go` 里的 `rootFlags`、`internal/output`、`internal/config`
 都是后端无关的，新后端可以直接复用。
 
 ## 文件职责一览
 
 | 路径 | 职责 |
 |---|---|
-| `cmd/ciq/main.go` | 入口，调用 `newRoot().Execute()` |
-| `cmd/ciq/root.go` | cobra root command，全局 flag |
-| `cmd/ciq/jenkins.go` | `ciq jenkins` 父命令 + 子命令注册 + `newJenkinsClient` 辅助 |
-| `cmd/ciq/jenkins_*.go` | 各资源的 CLI 子命令（一文件一资源） |
+| `cmd/cictl/main.go` | 入口，调用 `newRoot().Execute()` |
+| `cmd/cictl/root.go` | cobra root command，全局 flag |
+| `cmd/cictl/jenkins.go` | `cictl jenkins` 父命令 + 子命令注册 + `newJenkinsClient` 辅助 |
+| `cmd/cictl/jenkins_*.go` | 各资源的 CLI 子命令（一文件一资源） |
 | `internal/config/config.go` | 加载 `credentials.yaml`，按 context 解析 |
 | `internal/jenkins/client.go` | HTTP client（GET only） |
 | `internal/jenkins/path.go` | `team/service/main` → `/job/team/job/service/job/main` |

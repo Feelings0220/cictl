@@ -1,6 +1,6 @@
 /dist/
-/ciq
-/ciq.exe
+/cictl
+/cictl.exe
 *.test
 *.out
 coverage.txt

@@ -5,7 +5,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/kagent-dev/ciq/internal/jenkins"
+	"github.com/Feelings0220/cictl/internal/jenkins"
 	"github.com/spf13/cobra"
 )
 

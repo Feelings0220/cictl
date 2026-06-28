@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kagent-dev/ciq/internal/config"
+	"github.com/Feelings0220/cictl/internal/config"
 )
 
 type Client struct {

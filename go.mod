@@ -1,4 +1,4 @@
-module github.com/kagent-dev/ciq
+module github.com/Feelings0220/cictl
 
 go 1.26
 

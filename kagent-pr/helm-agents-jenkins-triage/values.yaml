@@ -13,20 +13,20 @@ agent:
     定位失败步骤、解释最可能的原因。涉及环境问题时检查 cloud config。
     如果修复需要 UI 操作，明确告诉用户，不要尝试 mutation。
 
-# ciq skill 直接从公开 OSS 仓库通过 Git ref 拉取
+# cictl skill 直接从公开 OSS 仓库通过 Git ref 拉取
 skills:
   gitRefs:
-    - url: https://github.com/kagent-dev/ciq
+    - url: https://github.com/Feelings0220/cictl
       ref: v0.1.0
       path: skills/jenkins.md
 
-# `ciq` 二进制必须在 Agent runtime 容器里能跑。两种方案：
-#   1) 用一个内置了 ciq 的自定义 runtime 镜像（生产推荐）。
+# `cictl` 二进制必须在 Agent runtime 容器里能跑。两种方案：
+#   1) 用一个内置了 cictl 的自定义 runtime 镜像（生产推荐）。
 #   2) 通过 hostPath / initContainer 挂载二进制（仅实验）。
 # 本 chart 假设方案 1，请用你自己的镜像覆盖 runtimeImage。
-runtimeImage: ghcr.io/your-org/kagent-runtime-with-ciq:latest
+runtimeImage: ghcr.io/your-org/kagent-runtime-with-cictl:latest
 
-# 挂载凭据 Secret（内含 ~/.config/ciq/credentials.yaml）
+# 挂载凭据 Secret（内含 ~/.config/cictl/credentials.yaml）
 credentialsSecret:
-  name: jenkins-ciq-credentials
+  name: jenkins-cictl-credentials
   key: credentials.yaml

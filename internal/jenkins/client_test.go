@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kagent-dev/ciq/internal/config"
+	"github.com/Feelings0220/cictl/internal/config"
 )
 
 func TestClient_GET(t *testing.T) {

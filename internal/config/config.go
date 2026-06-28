@@ -1,4 +1,4 @@
-// Package config loads ciq credentials from a YAML file.
+// Package config loads cictl credentials from a YAML file.
 package config
 
 import (

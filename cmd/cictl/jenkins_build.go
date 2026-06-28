@@ -4,7 +4,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/kagent-dev/ciq/internal/output"
+	"github.com/Feelings0220/cictl/internal/output"
 	"github.com/spf13/cobra"
 )
 

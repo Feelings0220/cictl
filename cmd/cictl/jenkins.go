@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/kagent-dev/ciq/internal/config"
-	"github.com/kagent-dev/ciq/internal/jenkins"
+	"github.com/Feelings0220/cictl/internal/config"
+	"github.com/Feelings0220/cictl/internal/jenkins"
 	"github.com/spf13/cobra"
 )
 

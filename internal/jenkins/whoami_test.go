@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/kagent-dev/ciq/internal/config"
+	"github.com/Feelings0220/cictl/internal/config"
 )
 
 func TestWhoAmI(t *testing.T) {

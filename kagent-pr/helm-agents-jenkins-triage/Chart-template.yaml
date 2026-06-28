@@ -1,6 +1,6 @@
 apiVersion: v2
 name: jenkins-triage
-description: Jenkins read-only triage agent (uses the ciq CLI + jenkins skill).
+description: Jenkins read-only triage agent (uses the cictl CLI + jenkins skill).
 type: application
 # kagent 的 release 工具会重写这两个字段
 version: 0.0.0

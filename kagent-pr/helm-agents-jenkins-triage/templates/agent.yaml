@@ -22,11 +22,11 @@ spec:
       - name: HOME
         value: /home/agent
     volumeMounts:
-      - name: ciq-credentials
-        mountPath: /home/agent/.config/ciq
+      - name: cictl-credentials
+        mountPath: /home/agent/.config/cictl
         readOnly: true
   volumes:
-    - name: ciq-credentials
+    - name: cictl-credentials
       secret:
         secretName: {{ .Values.credentialsSecret.name }}
         items:

@@ -18,7 +18,7 @@
 
 ## Vendoring 到 kagent
 
-在 ciq 仓库根目录，把 `KAGENT_DIR` 指向你 fork 的 kagent 路径：
+在 cictl 仓库根目录，把 `KAGENT_DIR` 指向你 fork 的 kagent 路径：
 
 ```bash
 make vendor-to-kagent KAGENT_DIR=$HOME/code/kagent
@@ -34,7 +34,7 @@ make vendor-to-kagent KAGENT_DIR=$HOME/code/kagent
 ```bash
 git checkout -b feat/jenkins-triage-agent
 git add helm/agents/jenkins-triage
-git commit -s -m "feat: add jenkins-triage agent (read-only via ciq)"
+git commit -s -m "feat: add jenkins-triage agent (read-only via cictl)"
 git push origin feat/jenkins-triage-agent
 ```
 
@@ -45,28 +45,28 @@ PR 描述模板：
 新增一个内置 agent `jenkins-triage`，用于只读地诊断 Jenkins 构建失败。
 
 ## How
-所有 Jenkins 查询都通过开源 CLI `ciq`（https://github.com/kagent-dev/ciq）。
+所有 Jenkins 查询都通过开源 CLI `cictl`（https://github.com/Feelings0220/cictl）。
 通过 `Agent.spec.skills.gitRefs` 加载 `jenkins` skill。结构上是只读的——
-`ciq` 这一构建里没有任何 mutation 子命令。
+`cictl` 这一构建里没有任何 mutation 子命令。
 
 ## Test plan
 - [ ] `helm lint helm/agents/jenkins-triage`
 - [ ] 在 Kind 集群部署，对接一个可达的 Jenkins，创建
-      `jenkins-ciq-credentials` Secret，验证 agent 能正确回答
+      `jenkins-cictl-credentials` Secret，验证 agent 能正确回答
       "列出 team/service folder 下的任务"。
 - [ ] 验证排查过程中 Jenkins access log 里没有任何 POST / PUT / DELETE 请求。
 ```
 
 ## 关于运行时镜像
 
-`ciq` 二进制必须能被 Agent runtime 调用。两种方式：
+`cictl` 二进制必须能被 Agent runtime 调用。两种方式：
 
 1. **自定义 runtime 镜像（推荐）。** 写一个 Dockerfile，从 kagent 官方 runtime 镜像
-   FROM 起，把 `ciq` 二进制 COPY 进去。Push 到自己的镜像仓库，在 `values.yaml` 里
+   FROM 起，把 `cictl` 二进制 COPY 进去。Push 到自己的镜像仓库，在 `values.yaml` 里
    把 `runtimeImage` 改成它。
 
 2. **initContainer 下载（实验场景）。** 在 Pod 里加一个 initContainer 从 GitHub
-   Releases 下载 `ciq`，挂到 emptyDir，主容器 `PATH` 加上这个 emptyDir。简单但每次
+   Releases 下载 `cictl`，挂到 emptyDir，主容器 `PATH` 加上这个 emptyDir。简单但每次
    起 Pod 都会拉一次网络。
 
 生产环境务必走方案 1。
