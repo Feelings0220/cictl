@@ -18,6 +18,7 @@ func newJenkinsCmd() *cobra.Command {
 	c.AddCommand(newJenkinsJobCmd())
 	c.AddCommand(newJenkinsBuildCmd())
 	c.AddCommand(newJenkinsConsoleCmd())
+	c.AddCommand(newJenkinsCloudCmd())
 	return c
 }
 
