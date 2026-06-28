@@ -45,5 +45,5 @@ func Load(path, context string) (Credentials, error) {
 	if !ok {
 		return Credentials{}, fmt.Errorf("context %q not found in credentials", context)
 	}
-	return Credentials{URL: c.URL, Username: c.Username, Token: c.Token, Insecure: c.Insecure}, nil
+	return Credentials(c), nil
 }
