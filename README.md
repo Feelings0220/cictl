@@ -63,9 +63,16 @@ cictl jenkins queue list                              # 当前构建队列
 
 ## 与 AI Agent 配合
 
-把 `skills/jenkins.md` 跟二进制一起发布。任何支持加载 skill markdown 的 Agent 框架——
-kagent（`Agent.spec.skills.gitRefs`）、Claude Code（`~/.claude/skills/`）、Cursor——
-都可以直接挂上去，让 Agent 开始排查 Jenkins 故障。
+skill 位于 `skills/jenkins/SKILL.md`（标准 Agent Skill 结构），跟二进制一起发布。任何
+支持加载 skill 的 Agent 框架都可以直接挂上去：
+
+- **Claude Code 插件**：`/plugin marketplace add Feelings0220/cictl` → `/plugin install cictl-jenkins@cictl`
+- **skills.sh**（跨 agent）：`npx skills add Feelings0220/cictl`
+- **kagent**：`Agent.spec.skills.gitRefs`，`path: skills/jenkins`、`name: jenkins`
+- **手动**：把 `skills/jenkins/` 拷进 `~/.claude/skills/`
+
+二进制不打进 skill（体积/平台/安全考虑）；skill 里附带 `scripts/install-cictl.sh`，
+按平台从 Releases 拉对应二进制并校验 checksum。
 
 ## 设计原则
 

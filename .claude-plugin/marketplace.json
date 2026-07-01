@@ -1,0 +1,20 @@
+{
+  "name": "cictl",
+  "owner": {
+    "name": "Feelings0220",
+    "url": "https://github.com/Feelings0220"
+  },
+  "metadata": {
+    "description": "cictl skills — read-only CI inspection for AI agents",
+    "version": "0.1.2"
+  },
+  "plugins": [
+    {
+      "name": "cictl-jenkins",
+      "source": "./",
+      "description": "Read-only Jenkins triage skill backed by the cictl CLI (jobs, builds, console, clouds, queue). Never mutates Jenkins state.",
+      "strict": false,
+      "skills": ["./skills/jenkins"]
+    }
+  ]
+}

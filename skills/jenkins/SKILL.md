@@ -7,6 +7,15 @@ description: Query Jenkins read-only (jobs, builds, console, clouds, queue) via 
 
 You have access to a CLI named `cictl` that wraps the Jenkins REST API. **All operations are GET-only — this binary cannot trigger, abort, or modify any Jenkins object.** Treat this as a safe inspection tool.
 
+## Prerequisites
+
+1. **`cictl` on `PATH`.** Check with `cictl --version`. If it is missing:
+   - Run the bundled installer: `bash "$CLAUDE_PLUGIN_ROOT/skills/jenkins/scripts/install-cictl.sh"` (detects OS/arch, downloads the matching release from GitHub, verifies the checksum).
+   - Or `go install github.com/Feelings0220/cictl/cmd/cictl@latest`.
+   - Or download a binary from https://github.com/Feelings0220/cictl/releases and put it on `PATH`.
+   - In kagent, `cictl` is baked into the Agent runtime image (see the repo's `docker/Dockerfile.runtime`); no install step is needed at runtime.
+2. **Credentials.** `cictl` reads `~/.config/cictl/credentials.yaml`. If it is missing, copy `examples/credentials.yaml.example` from the repo and fill in the Jenkins URL + a read-only API token. Never ask the user to paste a token into the chat.
+
 ## When to use
 
 - Diagnose a failed build (read console log, inspect build metadata, fetch job config).
@@ -16,7 +25,7 @@ You have access to a CLI named `cictl` that wraps the Jenkins REST API. **All op
 
 ## Authentication
 
-Already configured. The user has provided credentials in `~/.config/cictl/credentials.yaml`. If multiple environments are available, switch with `--context <name>` (e.g. `--context staging`). Never ask the user for credentials.
+Credentials live in `~/.config/cictl/credentials.yaml` (see Prerequisites). If multiple environments are available, switch with `--context <name>` (e.g. `--context staging`). Never ask the user for credentials interactively.
 
 ## Output
 

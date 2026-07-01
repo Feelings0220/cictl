@@ -19,15 +19,16 @@ spec:
   skills:
     gitRefs:
       - url: https://github.com/Feelings0220/cictl
-        ref: v0.1.0
-        path: skills
+        ref: v0.1.2
+        path: skills/jenkins
+        name: jenkins
   declarative:
     runtime: go
     modelConfig: default-model-config
     systemMessage: |
       你是一个 Jenkins triage agent。
 
-      使用 /skills/jenkins.md 中描述的 `cictl jenkins ...` 命令查询 Jenkins。
+      使用 /skills/jenkins/SKILL.md 中描述的 `cictl jenkins ...` 命令查询 Jenkins。
       默认 console 日志取最后 200 行，定位失败位置后再 --full。
 
       硬规则：

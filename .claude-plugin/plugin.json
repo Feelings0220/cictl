@@ -1,0 +1,14 @@
+{
+  "name": "cictl-jenkins",
+  "displayName": "cictl — Jenkins read-only triage",
+  "version": "0.1.2",
+  "description": "Read-only Jenkins inspection skill backed by the cictl CLI: jobs, builds, console logs, cloud config, and queue. Never mutates Jenkins state.",
+  "author": {
+    "name": "Feelings0220",
+    "url": "https://github.com/Feelings0220"
+  },
+  "homepage": "https://github.com/Feelings0220/cictl",
+  "repository": "https://github.com/Feelings0220/cictl",
+  "license": "Apache-2.0",
+  "keywords": ["jenkins", "ci", "cd", "devops", "read-only", "triage", "cictl"]
+}
